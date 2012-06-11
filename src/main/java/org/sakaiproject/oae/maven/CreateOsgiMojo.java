@@ -89,10 +89,23 @@ public class CreateOsgiMojo extends AbstractMojo {
   private String baseDir;
   
   /**
+   * Whether or not we simply want to show the help options.
+   * 
+   * @parameter expression="${help}" default-value="false"
+   */
+  private String help;
+  
+  /**
    * {@inheritDoc}
    * @see org.apache.maven.plugin.Mojo#execute()
    */
   public void execute() throws MojoExecutionException, MojoFailureException {
+    
+    if ("true".equals(help)) {
+      printHelp();
+      return;
+    }
+    
     Map<String, Object> ctx = new HashMap<String, Object>();
     ctx.put("groupId", getGroupId());
     ctx.put("artifactId", getArtifactId());
@@ -194,4 +207,42 @@ public class CreateOsgiMojo extends AbstractMojo {
     this.baseDir = baseDir;
   }
 
+  /**
+   * @return the templateUrl
+   */
+  public String getTemplateUrl() {
+    return templateUrl;
+  }
+
+  /**
+   * @param templateUrl the templateUrl to set
+   */
+  public void setTemplateUrl(String templateUrl) {
+    this.templateUrl = templateUrl;
+  }
+
+  /**
+   * @return the help
+   */
+  public String getHelp() {
+    return help;
+  }
+
+  /**
+   * @param help the help to set
+   */
+  public void setHelp(String help) {
+    this.help = help;
+  }
+
+  private void printHelp() {
+    getLog().info("*** USAGE ***");
+    getLog().info("mvn oae:osgi -DtemplateUrl=<URL to tar package template> [");
+    getLog().info("\t-DgroupId=<project group id (default: org.sakaiproject)>");
+    getLog().info("\t-DartifactId=<project artifact id>");
+    getLog().info("\t-Dversion=<project version>");
+    getLog().info("\t-DnakamuraVersion=<parent nakamura version>");
+    getLog().info("*** /USAGE ***");
+  }
+  
 }
