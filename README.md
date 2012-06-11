@@ -31,7 +31,7 @@ The `osgi` goal allows you to scaffold an OSGI bundle from scratch.
 ### Examples
 
 * `mvn oae:osgi -Dhelp=true`: Displays all available options for the goal. Doesn't actually generate any projects
-* `mvn oae:osgi`: Generates a simple OSGi bundle using all the defaults. *Note: This fails right now until there is a permanent home for the template package, use -DtemplateUrl to specify the package for now*
+* `mvn oae:osgi`: Generates a simple OSGi bundle using all the defaults. **Note: This fails right now until there is a permanent home for the template package, use -DtemplateUrl to specify the package for now**
 * `mvn oae:osgi -DtemplateUrl=http://www.mrvisser.ca/sakai/oae-plugin/osgi-simple.tar`: Generates a simple OSGi bundle using all the defaults, the templates are loaded from the osgi-simple.tar file.
 * `mvn oae:osgi -DartifactId=todo`: Generates a simple OSGi bundle with artifactId `todo`.
 
