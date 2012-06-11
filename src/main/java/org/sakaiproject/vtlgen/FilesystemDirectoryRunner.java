@@ -87,6 +87,10 @@ public class FilesystemDirectoryRunner implements Runner<File> {
     String targetPath = new StringBuilder(targetParent.getAbsolutePath()).append(File.separator)
         .append(processVtlgFilename(source.getName(), context)).toString();
     
+    if (new File(targetPath).exists()) {
+      throw new RuntimeException("Target file "+targetPath+" already exists. Not overwriting.");
+    }
+    
     LOGGER.info("Filtering file to {}", targetPath);
     
     if (isVtlgFile(source)) {
@@ -215,8 +219,5 @@ public class FilesystemDirectoryRunner implements Runner<File> {
     if (!target.exists())
       target.mkdirs();
     
-    if (target.list().length > 0)
-      throw new IllegalArgumentException(String.format("Target directory %s must be empty.",
-          target.getAbsolutePath()));
   }
 }

@@ -77,7 +77,7 @@ public class CreateOsgiMojo extends AbstractMojo {
   /**
    * The location of the template package for the generated project.
    * 
-   * @parameter expression="${templateUrl}" default-value="file:///tmp/sample.tar"
+   * @parameter expression="${templateUrl}" default-value="http://www.mrvisser.ca/sakai/oae-plugin/osgi-simple.tar"
    */
   private String templateUrl;
   
