@@ -17,16 +17,9 @@
  */
 package org.sakaiproject.oae.maven;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.sakaiproject.vtlgen.PackageRunner;
-import org.sakaiproject.vtlgen.api.Runner;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,214 +28,75 @@ import java.util.Map;
  * @requiresProject false
  * @goal osgi
  */
-public class CreateOsgiMojo extends AbstractMojo {
+public class CreateOsgiMojo extends TemplateExtractorPlugin {
 
-  private static final Runner<URL> runner = new PackageRunner();
-  
-  /**
-   * The groupId of the generated project.
-   * 
-   * @parameter expression="${groupId}" default-value="org.sakaiproject"
-   */
-  private String groupId;
-  
-  /**
-   * The artifactId of the generated project.
-   * 
-   * @parameter expression="${artifactId}" default-value="org.sakaiproject.oae-generated-project"
-   */
-  private String artifactId;
-  
-  /**
-   * The version of the generated project.
-   * 
-   * @parameter expression="${version}" default-value="0.1-SNAPSHOT"
-   */
-  private String version;
-  
-  /**
-   * The version of the parent nakamura project.
-   * 
-   * @parameter expression="${nakamuraVersion}" default-value="1.4.0-SNAPSHOT"
-   */
-  private String nakamuraVersion;
-  
-  /**
-   * The java package context of the generated project.
-   * 
-   * @parameter expression="${packageAlias}"
-   */
-  private String packageAlias;
-  
-  /**
-   * The location of the template package for the generated project.
-   * 
-   * @parameter expression="${templateUrl}" default-value="http://www.mrvisser.ca/sakai/oae-plugin/osgi-simple.tar"
-   */
-  private String templateUrl;
-  
   /**
    * The parent directory of the new project.
    * 
    * @parameter expression="${basedir}"
    */
   private String baseDir;
-  
-  /**
-   * Whether or not we simply want to show the help options.
-   * 
-   * @parameter expression="${help}" default-value="false"
-   */
-  private String help;
-  
+
   /**
    * {@inheritDoc}
-   * @see org.apache.maven.plugin.Mojo#execute()
+   * @see org.sakaiproject.oae.maven.TemplateExtractorPlugin#getPackageUrl()
    */
-  public void execute() throws MojoExecutionException, MojoFailureException {
-    
-    if ("true".equals(help)) {
-      printHelp();
-      return;
-    }
-    
-    Map<String, Object> ctx = new HashMap<String, Object>();
-    ctx.put("groupId", getGroupId());
-    ctx.put("artifactId", getArtifactId());
-    ctx.put("version", getVersion());
-    ctx.put("nakamuraVersion", getNakamuraVersion());
-    ctx.put("packageAlias", getPackageAlias());
-    
-    try {
-      runner.run(new URL(templateUrl), new File(getBaseDir()), ctx);
-    } catch (IOException e) {
-      throw new MojoExecutionException("Could not generate project from template", e);
-    }
-    
+  @Override
+  public String getPackageUrl() {
+    return "http://www.mrvisser.ca/sakai/oae-plugin/osgi-simple.tar";
   }
 
   /**
-   * @return the groupId
+   * {@inheritDoc}
+   * @see org.sakaiproject.oae.maven.TemplateExtractorPlugin#getTargetDir()
    */
-  public String getGroupId() {
-    return groupId;
-  }
-
-  /**
-   * @param groupId the groupId to set
-   */
-  public void setGroupId(String groupId) {
-    this.groupId = groupId;
-  }
-
-  /**
-   * @return the artifactId
-   */
-  public String getArtifactId() {
-    return artifactId;
-  }
-
-  /**
-   * @param artifactId the artifactId to set
-   */
-  public void setArtifactId(String artifactId) {
-    this.artifactId = artifactId;
-  }
-
-  /**
-   * @return the version
-   */
-  public String getVersion() {
-    return version;
-  }
-
-  /**
-   * @param version the version to set
-   */
-  public void setVersion(String version) {
-    this.version = version;
-  }
-
-  /**
-   * @return the nakamuraVersion
-   */
-  public String getNakamuraVersion() {
-    return nakamuraVersion;
-  }
-
-  /**
-   * @param nakamuraVersion the nakamuraVersion to set
-   */
-  public void setNakamuraVersion(String nakamuraVersion) {
-    this.nakamuraVersion = nakamuraVersion;
-  }
-
-  /**
-   * @return the packageAlias
-   */
-  public String getPackageAlias() {
-    if (packageAlias == null)
-      return artifactId.substring(artifactId.lastIndexOf(".")+1, artifactId.length());
-    return packageAlias;
-  }
-
-  /**
-   * @param packageAlias the packageAlias to set
-   */
-  public void setPackageAlias(String packageAlias) {
-    this.packageAlias = packageAlias;
-  }
-
-  /**
-   * @return the baseDir
-   */
-  public String getBaseDir() {
+  @Override
+  public String getTargetDir() {
     return baseDir;
   }
 
   /**
-   * @param baseDir the baseDir to set
+   * {@inheritDoc}
+   * @see org.sakaiproject.oae.maven.TemplateExtractorPlugin#getDefaults()
    */
-  public void setBaseDir(String baseDir) {
-    this.baseDir = baseDir;
+  @Override
+  public Map<String, Object> getDefaults() {
+    Map<String, Object> defaults = new HashMap<String, Object>();
+    defaults.put("groupId", "org.sakaiproject");
+    defaults.put("version", "0.1-SNAPSHOT");
+    defaults.put("nakamuraVersion", "1.3.0");
+    defaults.put("baseDir", baseDir);
+    return defaults;
   }
-
+  
   /**
-   * @return the templateUrl
+   * {@inheritDoc}
+   * @see org.sakaiproject.oae.maven.TemplateExtractorPlugin#buildContextProperties(java.util.List, java.util.Map)
    */
-  public String getTemplateUrl() {
-    return templateUrl;
+  @Override
+  protected Map<String, Object> buildContextProperties(List<ConfigurationProperty> configProperties,
+      Map<String, Object> allProps) {
+    Map<String, Object> context = super.buildContextProperties(configProperties, allProps);
+    
+    // ensure the packageAlias is set.
+    if (!context.containsKey("packageAlias")) {
+      context.put("packageAlias", context.get("artifactId"));
+    }
+    
+    return context;
+    
   }
 
-  /**
-   * @param templateUrl the templateUrl to set
-   */
-  public void setTemplateUrl(String templateUrl) {
-    this.templateUrl = templateUrl;
-  }
-
-  /**
-   * @return the help
-   */
-  public String getHelp() {
-    return help;
-  }
-
-  /**
-   * @param help the help to set
-   */
-  public void setHelp(String help) {
-    this.help = help;
-  }
-
-  private void printHelp() {
-    getLog().info("*** USAGE ***");
-    getLog().info("mvn oae:osgi -DtemplateUrl=<URL to tar package template> [");
-    getLog().info("\t-DgroupId=<project group id (default: org.sakaiproject)>");
-    getLog().info("\t-DartifactId=<project artifact id>");
-    getLog().info("\t-Dversion=<project version>");
-    getLog().info("\t-DnakamuraVersion=<parent nakamura version>");
-    getLog().info("*** /USAGE ***");
+  @Override
+  public List<ConfigurationProperty> getConfigurationProperties() {
+    return Arrays.asList(
+        new ConfigurationProperty("groupId", null, "org.sakaiproject"),
+        new ConfigurationProperty("artifactId", null, null),
+        new ConfigurationProperty("version", null, "0.1-SNAPSHOT"),
+        new ConfigurationProperty("nakamuraVersion", "parent nakamura version", "1.3.0"),
+        new ConfigurationProperty("packageAlias", "class package (e.g., myapp)", "The artifactId"),
+        new ConfigurationProperty("baseDir", "target directory", "Current directory")
+      );
   }
   
 }
