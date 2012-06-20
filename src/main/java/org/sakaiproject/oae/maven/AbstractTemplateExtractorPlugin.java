@@ -31,9 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * This class bakes in common functionality for scaffolding a project based on a
+ * template package.
  */
-public abstract class TemplateExtractorPlugin extends AbstractMojo {
+public abstract class AbstractTemplateExtractorPlugin extends AbstractMojo {
 
   public static final String PROP_HELP = "help";
   
@@ -72,7 +73,20 @@ public abstract class TemplateExtractorPlugin extends AbstractMojo {
   public abstract String getTargetDir();
   
   /**
-   * @return The configuration properties used in the package context.
+   * @return The configuration properties used in the package context. These properties
+   * are used in the following ways:
+   * <p>
+   * <strong>key:</strong> Used for display purposes in the help content, as well as used
+   * to pull input parameters from the environment into the template context. Unless you
+   * override {@link #buildContextProperties(List, Map)}, only properties whose key is
+   * provided as a configuration property will be included in the context.
+   * <p>
+   * <strong>description:</strong> Used for display purposes only in the help content.
+   * <p>
+   * <strong>defaultValue:</strong> Used for <strong>display purposes</strong> to show the
+   * default value. Also, if defaultValue is {@code null}, the property will be considered
+   * as reauired, and will be validated as such. If you want to provide the actual default
+   * context value for the property, do so using {@link #getDefaults()}.
    */
   public abstract List<ConfigurationProperty> getConfigurationProperties();
   
@@ -82,7 +96,7 @@ public abstract class TemplateExtractorPlugin extends AbstractMojo {
   public abstract Map<String, Object> getDefaults();
   
   /**
-   * Validate that the context is consistent with the required parameters just before
+   * Validate that the context is consistent with the requirements just before
    * the package is extracted.
    * 
    * @param ctx
@@ -97,7 +111,7 @@ public abstract class TemplateExtractorPlugin extends AbstractMojo {
   }
   
   /**
-   * Get all context properties that will be passed to the package extraction.
+   * Get all context properties that will be passed for package extraction.
    * 
    * @param configProps
    * @param allProps
@@ -123,7 +137,10 @@ public abstract class TemplateExtractorPlugin extends AbstractMojo {
   }
   
   /**
-   * Parse the given String system property into the appropriate context property.
+   * Parse the given String system property into the appropriate context property. It is
+   * expected that this would be overridden to handle situations where you want to bind
+   * more complex objects to the context (e.g., convert property "1,2,3" to an array
+   * [1, 2, 3]).
    * 
    * @param key
    * @param value
@@ -137,7 +154,7 @@ public abstract class TemplateExtractorPlugin extends AbstractMojo {
    * @return The aggregated list of all properties that are available for the context. These
    * are to be filtered out according to the list of properties required.
    */
-  protected Map<String, Object> buildAllAvailablePluginProperties() {
+  private Map<String, Object> buildAllAvailablePluginProperties() {
     Map<String, Object> result = new HashMap<String, Object>();
     
     for (Object keyObj : System.getProperties().keySet()) {
@@ -155,7 +172,7 @@ public abstract class TemplateExtractorPlugin extends AbstractMojo {
   /**
    * Print the help content for the plugin user.
    */
-  protected void printHelp() {
+  private void printHelp() {
     List<ConfigurationProperty> cps = getConfigurationProperties();
     getLog().info("*** USAGE ***");
     if (cps != null && !cps.isEmpty()) {
@@ -175,7 +192,7 @@ public abstract class TemplateExtractorPlugin extends AbstractMojo {
    * @param cp
    * @return
    */
-  protected String getPropertyHelpLine(ConfigurationProperty cp) {
+  private String getPropertyHelpLine(ConfigurationProperty cp) {
     StringBuilder line = new StringBuilder(String.format("-D%s ", cp.key));
     
     if (cp.description != null) {

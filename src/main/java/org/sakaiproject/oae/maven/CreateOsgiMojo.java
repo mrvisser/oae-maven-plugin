@@ -28,7 +28,7 @@ import java.util.Map;
  * @requiresProject false
  * @goal osgi
  */
-public class CreateOsgiMojo extends TemplateExtractorPlugin {
+public class CreateOsgiMojo extends AbstractTemplateExtractorPlugin {
 
   /**
    * The parent directory of the new project.
@@ -39,7 +39,7 @@ public class CreateOsgiMojo extends TemplateExtractorPlugin {
 
   /**
    * {@inheritDoc}
-   * @see org.sakaiproject.oae.maven.TemplateExtractorPlugin#getPackageUrl()
+   * @see org.sakaiproject.oae.maven.AbstractTemplateExtractorPlugin#getPackageUrl()
    */
   @Override
   public String getPackageUrl() {
@@ -48,7 +48,7 @@ public class CreateOsgiMojo extends TemplateExtractorPlugin {
 
   /**
    * {@inheritDoc}
-   * @see org.sakaiproject.oae.maven.TemplateExtractorPlugin#getTargetDir()
+   * @see org.sakaiproject.oae.maven.AbstractTemplateExtractorPlugin#getTargetDir()
    */
   @Override
   public String getTargetDir() {
@@ -57,7 +57,7 @@ public class CreateOsgiMojo extends TemplateExtractorPlugin {
 
   /**
    * {@inheritDoc}
-   * @see org.sakaiproject.oae.maven.TemplateExtractorPlugin#getDefaults()
+   * @see org.sakaiproject.oae.maven.AbstractTemplateExtractorPlugin#getDefaults()
    */
   @Override
   public Map<String, Object> getDefaults() {
@@ -71,7 +71,7 @@ public class CreateOsgiMojo extends TemplateExtractorPlugin {
   
   /**
    * {@inheritDoc}
-   * @see org.sakaiproject.oae.maven.TemplateExtractorPlugin#buildContextProperties(java.util.List, java.util.Map)
+   * @see org.sakaiproject.oae.maven.AbstractTemplateExtractorPlugin#buildContextProperties(java.util.List, java.util.Map)
    */
   @Override
   protected Map<String, Object> buildContextProperties(List<ConfigurationProperty> configProperties,
