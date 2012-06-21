@@ -56,7 +56,7 @@ It's the maven plugin for Sakai OAE.
 </settings>
 ```
 
-The pluginGroups entry allows maven to search the org.sakaiproject group to locate the OAE plugin.
+These entries allow the plugin to automagically detect the oae: plugin, and be able to run independenty from any existing Sakai pom.xml file.
 
 # How to use it
 
