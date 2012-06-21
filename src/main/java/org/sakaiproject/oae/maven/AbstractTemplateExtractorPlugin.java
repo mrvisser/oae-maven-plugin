@@ -24,8 +24,6 @@ import org.sakaiproject.vtlgen.PackageRunner;
 import org.sakaiproject.vtlgen.api.Runner;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +36,7 @@ public abstract class AbstractTemplateExtractorPlugin extends AbstractMojo {
 
   public static final String PROP_HELP = "help";
   
-  private static final Runner<URL> runner = new PackageRunner();
+  private static final Runner<String> runner = new PackageRunner();
   
   /**
    * {@inheritDoc}
@@ -47,23 +45,25 @@ public abstract class AbstractTemplateExtractorPlugin extends AbstractMojo {
   public final void execute() throws MojoExecutionException, MojoFailureException {
     Map<String, Object> allProps = buildAllAvailablePluginProperties();
     if ("true".equals(allProps.get(PROP_HELP))) {
+      getLog().info("");
+      getLog().info("");
       printHelp();
+      getLog().info("");
+      getLog().info("");
       return;
     }
     
     List<ConfigurationProperty> configProps = getConfigurationProperties();
     Map<String, Object> ctx = buildContextProperties(configProps, allProps);
     validate(configProps, ctx);
-    
-    try {
-      runner.run(new URL(getPackageUrl()), new File(getTargetDir()), ctx);
-    } catch (IOException e) {
-      throw new MojoExecutionException("Could not generate project from template", e);
-    }
+    runner.run(getPackageUrl(), new File(getTargetDir()), ctx);
   }
 
   /**
-   * @return The URL to the template package that should be used to process the scaffolding. 
+   * @return The URL to the template package that should be used to process the scaffolding. In
+   * addition to recognized Java URL protocols, this also supports classpath: protocol, where a
+   * classpath resource may be included, such as:
+   * {@code classpath:/org/sakaiproject/oae/maven/templates/osgi-simple.tar}
    */
   public abstract String getPackageUrl();
   
@@ -174,16 +174,15 @@ public abstract class AbstractTemplateExtractorPlugin extends AbstractMojo {
    */
   private void printHelp() {
     List<ConfigurationProperty> cps = getConfigurationProperties();
-    getLog().info("*** USAGE ***");
     if (cps != null && !cps.isEmpty()) {
       getLog().info("Available Properties:");
+      getLog().info("");
       for (ConfigurationProperty cp : cps) {
         getLog().info("\t"+getPropertyHelpLine(cp));
       }
     } else {
       getLog().info("This plugin has no parameters, just run the goal.");
     }
-    getLog().info("*** /USAGE ***");
   }
   
   /**

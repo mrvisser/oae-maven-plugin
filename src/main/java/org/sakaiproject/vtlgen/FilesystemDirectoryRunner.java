@@ -45,7 +45,7 @@ public class FilesystemDirectoryRunner implements Runner<File> {
    * @see org.sakaiproject.vtlgen.api.Runner#run(java.lang.Object, java.io.File, java.util.Map)
    */
   public void run(File packageRoot, File target, Map<String, Object> context) {
-    LOGGER.info("Beginning FilesystemDirectoryRunner with context: {}", context);
+    LOGGER.debug("Beginning FilesystemDirectoryRunner with context: {}", context);
     prepareAndValidate(packageRoot, target);
     for (File child : packageRoot.listFiles()) {
       runInternal(child, target, context);
@@ -62,10 +62,10 @@ public class FilesystemDirectoryRunner implements Runner<File> {
    * @param context The context data
    */
   private void runInternal(File source, File targetParent, Map<String, Object> context) {
-    LOGGER.info("runInternal from '{}' to target parent '{}'", source.getAbsolutePath(),
+    LOGGER.debug("runInternal from '{}' to target parent '{}'", source.getAbsolutePath(),
         targetParent.getAbsolutePath());
     File target = process(source, targetParent, context);
-    LOGGER.info("Finished processing of '{}'", source.getAbsolutePath());
+    LOGGER.debug("Finished processing of '{}'", source.getAbsolutePath());
     if (source.isDirectory()) {
       for (File child : source.listFiles()) {
         runInternal(child, target, context);
@@ -91,10 +91,10 @@ public class FilesystemDirectoryRunner implements Runner<File> {
       throw new RuntimeException("Target file "+targetPath+" already exists. Not overwriting.");
     }
     
-    LOGGER.info("Filtering file to {}", targetPath);
+    LOGGER.debug("Filtering file to {}", targetPath);
     
     if (isVtlgFile(source)) {
-      LOGGER.info("File needs to be processed.");
+      LOGGER.debug("File needs to be processed.");
       File targetFile = new File(targetPath);
       FileInputStream fis = null;
       FileOutputStream fos = null;
@@ -109,9 +109,12 @@ public class FilesystemDirectoryRunner implements Runner<File> {
         IOUtils.closeQuietly(fos);
       }
     } else {
-      LOGGER.info("Does not need processing. Will just copy.");
+      LOGGER.debug("Does not need processing. Will just copy.");
       copyFile(source, targetPath);
     }
+    
+    LOGGER.info("Extracted file: "+targetPath);
+    
     return new File(targetPath);
   }
   

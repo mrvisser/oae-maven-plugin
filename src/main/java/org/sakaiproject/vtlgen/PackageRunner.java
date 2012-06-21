@@ -15,18 +15,18 @@ import java.util.Map;
 /**
  *
  */
-public class PackageRunner implements Runner<URL> {
+public class PackageRunner implements Runner<String> {
 
   private final static FilesystemDirectoryRunner fsRunner =
       new FilesystemDirectoryRunner();
 
-  public void run(URL url, File targetRoot, Map<String, Object> context) {
+  public void run(String urlStr, File targetRoot, Map<String, Object> context) {
     InputStream is = null;
     OutputStream os = null;
     File pkg = null;
     try {
+      is = createResourceInputStream(urlStr);
       pkg = File.createTempFile("vtlg-pkg", String.valueOf(System.currentTimeMillis()));
-      is = url.openStream();
       os = new FileOutputStream(pkg);
       IOUtils.copy(is, os);
     } catch (IOException e) {
@@ -47,4 +47,12 @@ public class PackageRunner implements Runner<URL> {
     }
   }
 
+  private InputStream createResourceInputStream(String urlStr) throws IOException {
+    if (urlStr.startsWith("classpath:")) {
+      return getClass().getResourceAsStream(urlStr.substring("classpath:".length()));
+    } else {
+      return new URL(urlStr).openStream();
+    }
+  }
+  
 }

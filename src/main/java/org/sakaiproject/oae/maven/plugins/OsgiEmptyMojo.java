@@ -15,7 +15,12 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package org.sakaiproject.oae.maven;
+package org.sakaiproject.oae.maven.plugins;
+
+import org.sakaiproject.oae.maven.AbstractTemplateExtractorPlugin;
+import org.sakaiproject.oae.maven.ConfigurationProperty;
+import org.sakaiproject.oae.maven.Help;
+import org.sakaiproject.oae.maven.HelpProvider;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,10 +31,14 @@ import java.util.Map;
  * Generate an OSGi bundle.
  * 
  * @requiresProject false
- * @goal osgi
+ * @goal osgi-empty
  */
-public class CreateOsgiMojo extends AbstractTemplateExtractorPlugin {
-
+public class OsgiEmptyMojo extends AbstractTemplateExtractorPlugin implements HelpProvider {
+  
+  public static Help createHelp() {
+    return new Help("osgi-empty", "Create a bare-bones OSGi bundle scaffold for Nakamura.");
+  }
+  
   /**
    * The parent directory of the new project.
    * 
@@ -43,7 +52,7 @@ public class CreateOsgiMojo extends AbstractTemplateExtractorPlugin {
    */
   @Override
   public String getPackageUrl() {
-    return "http://www.mrvisser.ca/sakai/oae-plugin/osgi-simple.tar";
+    return "classpath:/org/sakaiproject/oae/maven/templates/osgi-empty.tar";
   }
 
   /**
