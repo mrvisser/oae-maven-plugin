@@ -14,6 +14,11 @@
 	<artifactId>oae-maven-plugin</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
+	<scm>
+		<connection>scm:git:git://github.com/zathomas/oae-maven-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:zathomas/oae-maven-plugin.git</developerConnection>
+		<url>http://github.com/mrvisser/oae-maven-plugin/</url>
+	</scm>
 	
 	<dependencies>
 		<dependency>
