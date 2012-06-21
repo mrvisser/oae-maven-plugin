@@ -4,9 +4,17 @@ It's the maven plugin for Sakai OAE.
 
 # Prerequisites
 
-## 1. Download and install Maven 2 or 3
+### 1. Download and install Maven 2 or 3
 
-## 2. Add the pluginGroups entry to your ~/.m2/settings.xml file. This is mine:
+### 2. Clone and build this repo:
+
+```sh
+~$ git clone http://github.com/mrvisser/oae-maven-plugin.git
+~$ cd oae-maven-plugin
+~$ mvn clean install
+```
+
+### 3. Add the pluginGroups entry to your ~/.m2/settings.xml file. This is mine:
 
 ```xml
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
