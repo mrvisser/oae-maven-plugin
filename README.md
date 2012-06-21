@@ -14,7 +14,7 @@ It's the maven plugin for Sakai OAE.
 ~$ mvn clean install
 ```
 
-### 3. Add the pluginGroups entry to your ~/.m2/settings.xml file. This is mine:
+### 3. Add the pluginGroups and repositories entry to your ~/.m2/settings.xml file. Here is an example:
 
 ```xml
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -23,8 +23,48 @@ It's the maven plugin for Sakai OAE.
                       http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
   <pluginGroups>
-	  <pluginGroup>org.sakaiproject</pluginGroup>
+    <pluginGroup>org.sakaiproject</pluginGroup>
   </pluginGroups>
+  
+  <profiles>
+    <profile>
+      <id>oae</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>sakai</id>
+          <name>Sakai repository</name>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+          <url>http://source.sakaiproject.org/maven2</url>
+          <layout>default</layout>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>sakai-plugin</id>
+          <name>Sakai Plugins</name>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <url>http://source.sakaiproject.org/maven2/</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
 </settings>
 ```
 
