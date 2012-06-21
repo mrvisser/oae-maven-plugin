@@ -6,15 +6,7 @@ It's the maven plugin for Sakai OAE.
 
 ### 1. Download and install Maven 2 or 3
 
-### 2. Clone and build this repo:
-
-```sh
-~$ git clone http://github.com/mrvisser/oae-maven-plugin.git
-~$ cd oae-maven-plugin
-~$ mvn clean install
-```
-
-### 3. Add the pluginGroups and repositories entry to your ~/.m2/settings.xml file. Here is an example:
+### 2. Add the pluginGroups and repositories entry to your ~/.m2/settings.xml file. Here is an example:
 
 ```xml
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
