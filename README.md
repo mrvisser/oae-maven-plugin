@@ -27,23 +27,20 @@ It's the maven plugin for Sakai OAE.
       <repositories>
         <repository>
           <id>sakai</id>
+          <url>http://source.sakaiproject.org/maven2</url>
           <name>Sakai repository</name>
           <releases>
             <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-            <checksumPolicy>warn</checksumPolicy>
           </releases>
           <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-            <checksumPolicy>fail</checksumPolicy>
+            <enabled>false</enabled>
           </snapshots>
-          <url>http://source.sakaiproject.org/maven2</url>
           <layout>default</layout>
         </repository>
       </repositories>
       <pluginRepositories>
         <pluginRepository>
+          <url>http://source.sakaiproject.org/maven2/</url>
           <id>sakai-plugin</id>
           <name>Sakai Plugins</name>
           <releases>
@@ -52,7 +49,6 @@ It's the maven plugin for Sakai OAE.
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
-          <url>http://source.sakaiproject.org/maven2/</url>
         </pluginRepository>
       </pluginRepositories>
     </profile>
