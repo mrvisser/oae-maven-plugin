@@ -22,24 +22,19 @@ It's the maven plugin for Sakai OAE.
 
 The pluginGroups entry allows maven to search the org.sakaiproject group to locate the OAE plugin.
 
-# Goals
+# How to use it
 
-## OSGI
+Run `mvn oae:help` from the command-line and the plugin should be able to take you from there.
 
-The `osgi` goal allows you to scaffold an OSGI bundle from scratch.
+# Extending the packaging / scaffolding template
 
-### Examples
+## Creating a new scaffolding goal
 
-* `mvn oae:osgi -Dhelp=true`: Displays all available options for the goal. Doesn't actually generate any projects
-* `mvn oae:osgi`: Generates a simple OSGi bundle using all the defaults (artifactId is org.sakaiproject.oae-generated-project)
-* `mvn oae:osgi -DtemplateUrl=http://www.mrvisser.ca/sakai/oae-plugin/osgi-simple.tar`: Generates a simple OSGi bundle using all the defaults, the templates are loaded from the osgi-simple.tar file.
-* `mvn oae:osgi -DartifactId=todo`: Generates a simple OSGi bundle with artifactId `todo`.
+To create a new goal for scaffolding, you can extend the AbstractTemplateExtractorPlugin and follow the javadocs. Don't forget to add the standard mojo doclets like @goal and '@requiresProject false'. See OsgiEmptyMojo as a demonstration.
 
-### Packaging
+## Package template
 
-The packaging of a template archive has two main concepts:
-
-* The template archive must be stored in a `tar` file. The -DtemplateUrl parameter must be a java URL that references this tar file somewhere.
+* The template archive must be stored in a `tar` file.
 * Filename expression: A simple filename expression that can be used to name files dynamically based on input parameters.
 * *.vtdl files: A file that should be run through the velocity template processor. The ".vtlg" at the end is automatically choppoed off of the file extension after it is processed.
 
@@ -57,5 +52,6 @@ The resulting content is: `todo/src/main/java/file-todo.txt`
 
 and the file `file-todo.txt` has content: "ArtifactId: todo"
 
+## Registering in the help directory
 
-
+To register a new goal into the `mvn oae:help` directory, you must place a class that implements HelpProvider inside the package `org.sakaiproject.oae.maven.plugins`. For simplicity, we use convention over configuration here. Your HelpProvider class must have static method "createHelp()" to provide the help contents, please see the HelpProvider javadoc for more info. If you extend AbstractTemplateExtractorPlugin and placed it in the proper package, then this is all taken care of for you.
