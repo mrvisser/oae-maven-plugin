@@ -13,9 +13,9 @@
 	<version>0.2-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 	<scm>
-		<connection>scm:git:git://github.com/zathomas/oae-maven-plugin.git</connection>
-		<developerConnection>scm:git:git@github.com:zathomas/oae-maven-plugin.git</developerConnection>
-		<url>http://github.com/mrvisser/oae-maven-plugin/</url>
+		<connection>scm:git:git://github.com/sakaiproject/oae-maven-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:sakaiproject/oae-maven-plugin.git</developerConnection>
+		<url>http://github.com/sakaiproject/oae-maven-plugin/</url>
 	</scm>
 	
 	<dependencies>
